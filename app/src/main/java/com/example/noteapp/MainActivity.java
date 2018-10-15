@@ -22,8 +22,10 @@ public class MainActivity extends AppCompatActivity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String titleAndDescription = editTitle.getText().toString() + " - " + editDescription.getText().toString();
-                    Toast.makeText(MainActivity.this, titleAndDescription, Toast.LENGTH_LONG).show();
+                    Note newNote = new Note(editTitle.getText().toString(), editDescription.getText().toString());
+                    NoteRepository.getInstance().addNote(newNote);
+                    Toast.makeText(MainActivity.this, NoteRepository.getInstance().getNotes().get(0).toString(), Toast.LENGTH_LONG).show();
+                    finish();
                 }
             }
         );

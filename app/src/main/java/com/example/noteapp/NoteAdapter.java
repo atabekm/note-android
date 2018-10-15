@@ -7,10 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private String[] notes;
+import java.util.List;
 
-    public NoteAdapter(String[] notesList) {
+public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private List<Note> notes;
+
+    public NoteAdapter(List<Note> notesList) {
         notes = notesList;
     }
 
@@ -24,12 +26,12 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-        ((NoteViewHolder) viewHolder).textView.setText(notes[i]);
+        ((NoteViewHolder) viewHolder).textView.setText(notes.get(i).getTitle() + " : " + notes.get(i).getDescription());
     }
 
     @Override
     public int getItemCount() {
-        return notes.length;
+        return notes.size();
     }
 
     public static class NoteViewHolder extends RecyclerView.ViewHolder {
