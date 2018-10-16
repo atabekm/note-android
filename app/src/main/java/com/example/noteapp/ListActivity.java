@@ -13,6 +13,7 @@ import android.view.View;
 import java.util.List;
 
 public class ListActivity extends AppCompatActivity {
+    NoteAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +28,7 @@ public class ListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         List<Note> notes = NoteRepository.getInstance().getNotes();
-        NoteAdapter adapter = new NoteAdapter(notes);
+        adapter = new NoteAdapter(this, notes);
         recyclerView.setAdapter(adapter);
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -40,4 +41,9 @@ public class ListActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
+    }
 }
