@@ -26,16 +26,16 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     String noteTitle = editTitle.getText().toString();
                     String noteDescription = editDescription.getText().toString();
+                    Note note;
                     if (noteId == -1) {
                         int id = (int) (Math.random() * 100000);
-                        Note newNote = new Note(id, noteTitle, noteDescription);
-                        NoteRepository.getInstance().addNote(newNote);
+                        note = new Note(id, noteTitle, noteDescription);
                     } else {
-                        Note note = NoteRepository.getInstance().getNoteById(noteId);
+                        note = DatabaseHelper.getDb(getApplicationContext()).noteDao().getNoteById(noteId);
                         note.setTitle(noteTitle);
                         note.setDescription(noteDescription);
-                        NoteRepository.getInstance().updateNote(note);
                     }
+                    DatabaseHelper.getDb(getApplicationContext()).noteDao().insertNote(note);
                     finish();
                 }
             }
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (noteId != -1) {
-                    NoteRepository.getInstance().deleteNoteById(noteId);
+                    DatabaseHelper.getDb(getApplicationContext()).noteDao().deleteNote(noteId);
                     finish();
                 }
             }
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (noteId != -1) {
             // aldingisin ozgertip atirmiz
-            Note note = NoteRepository.getInstance().getNoteById(noteId);
+            Note note = DatabaseHelper.getDb(getApplicationContext()).noteDao().getNoteById(noteId);
 
             if (note != null) {
                 buttonDelete.setVisibility(View.VISIBLE);

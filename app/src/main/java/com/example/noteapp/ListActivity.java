@@ -14,6 +14,7 @@ import java.util.List;
 
 public class ListActivity extends AppCompatActivity {
     NoteAdapter adapter;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,14 +23,10 @@ public class ListActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        RecyclerView recyclerView = findViewById(R.id.notes_list);
+        recyclerView = findViewById(R.id.notes_list);
         recyclerView.addItemDecoration(
             new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        List<Note> notes = NoteRepository.getInstance().getNotes();
-        adapter = new NoteAdapter(this, notes);
-        recyclerView.setAdapter(adapter);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -44,6 +41,9 @@ public class ListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        adapter.notifyDataSetChanged();
+
+        List<Note> notes = DatabaseHelper.getDb(getApplicationContext()).noteDao().getNotes();
+        adapter = new NoteAdapter(this, notes);
+        recyclerView.setAdapter(adapter);
     }
 }
